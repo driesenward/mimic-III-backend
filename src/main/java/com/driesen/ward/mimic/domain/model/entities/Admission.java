@@ -24,6 +24,4 @@ public class Admission {
     private LocalDateTime admitTime;
     @Column(name = "dischtime")
     private LocalDateTime dischargeTime;
-    @Column(name = "diagnosis")
-    private String diagnosis;
 }

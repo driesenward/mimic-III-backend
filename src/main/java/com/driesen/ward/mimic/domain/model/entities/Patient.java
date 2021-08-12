@@ -18,6 +18,7 @@ public class Patient {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "subject_id")
     private int id;
+    @Column(name = "gender")
     private String gender;
     @Column(name = "dob")
     private LocalDateTime dateOfBirth;
