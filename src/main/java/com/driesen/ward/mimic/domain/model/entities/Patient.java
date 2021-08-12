@@ -1,4 +1,4 @@
-package com.driesen.ward.mimic.domain.model;
+package com.driesen.ward.mimic.domain.model.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,20 +8,17 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Entity(name = "admissions")
+@Entity(name = "patients")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Admission {
+public class Patient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "row_id")
-    private int id;
     @Column(name = "subject_id")
-    private int patientId;
-    @Column(name = "admittime")
-    private LocalDateTime admitTime;
-    @Column(name = "dischtime")
-    private LocalDateTime dischargeTime;
+    private int id;
+    private String gender;
+    @Column(name = "dob")
+    private LocalDateTime dateOfBirth;
 }

@@ -1,4 +1,4 @@
-package com.driesen.ward.mimic.domain.model;
+package com.driesen.ward.mimic.domain.model.calculations;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,8 +11,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PatientAdmissionCorrelation {
-    private String[] categories;
-    private List<Integer> male;
-    private List<Integer> female;
+public class IndividualPatientAdmissionCorrelation {
+    private List<AgeOccurrence> male;
+    private List<AgeOccurrence> female;
 }

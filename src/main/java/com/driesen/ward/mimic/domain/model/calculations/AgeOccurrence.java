@@ -1,4 +1,4 @@
-package com.driesen.ward.mimic.domain.model.dto;
+package com.driesen.ward.mimic.domain.model.calculations;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
