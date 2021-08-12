@@ -1,5 +1,6 @@
 package com.driesen.ward.mimic.controller;
 
+import com.driesen.ward.mimic.domain.model.dto.IndividualPatientAdmissionCorrelationDto;
 import com.driesen.ward.mimic.domain.model.dto.PatientAdmissionCorrelationDto;
 import com.driesen.ward.mimic.domain.service.analysis.IAnalysisService;
 import lombok.RequiredArgsConstructor;
@@ -17,11 +18,15 @@ public class TestController {
 
     @GetMapping("grouped")
     public PatientAdmissionCorrelationDto analyseCorrelationPatientAgeGenderAdmissionGrouped() {
-        return modelMapper.map(analysisService.findCorrelationBetweenPatientAgeGenderAndAdmissionRate(), PatientAdmissionCorrelationDto.class);
+        return modelMapper.map(
+                analysisService.findCorrelationBetweenPatientAgeGenderAndAdmissionRateGrouped(),
+                PatientAdmissionCorrelationDto.class);
     }
 
     @GetMapping("individual")
-    public PatientAdmissionCorrelationDto analyseCorrelationPatientAgeGenderAdmissionIndividual() {
-        return null;
+    public IndividualPatientAdmissionCorrelationDto analyseCorrelationPatientAgeGenderAdmissionIndividual() {
+        return modelMapper.map(
+                analysisService.findCorrelationBetweenPatientAgeGenderAndAdmissionRateIndividual(),
+                IndividualPatientAdmissionCorrelationDto.class);
     }
 }

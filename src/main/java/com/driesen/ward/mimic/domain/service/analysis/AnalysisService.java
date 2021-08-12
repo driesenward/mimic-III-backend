@@ -1,8 +1,8 @@
 package com.driesen.ward.mimic.domain.service.analysis;
 
-import com.driesen.ward.mimic.domain.model.AgeGroup;
-import com.driesen.ward.mimic.domain.model.Patient;
-import com.driesen.ward.mimic.domain.model.PatientAdmissionCorrelation;
+import com.driesen.ward.mimic.domain.model.*;
+import com.driesen.ward.mimic.domain.model.dto.AgeOccurrence;
+import com.driesen.ward.mimic.domain.model.dto.IndividualPatientAdmissionCorrelationDto;
 import com.driesen.ward.mimic.domain.service.admission.IAdmissionService;
 import com.driesen.ward.mimic.domain.service.patient.IPatientService;
 import lombok.RequiredArgsConstructor;
@@ -30,35 +30,36 @@ public class AnalysisService implements IAnalysisService {
     };
 
     @Override
-    public PatientAdmissionCorrelation findCorrelationBetweenPatientAgeGenderAndAdmissionRate() {
+    public PatientAdmissionCorrelation findCorrelationBetweenPatientAgeGenderAndAdmissionRateGrouped() {
         List<Patient> male = patientService.findByGender("M");
         List<Patient> female = patientService.findByGender("F");
 
-        List<Long> nbrOfAgesPerCategoryMale = getNbrPerAgeCategory(male);
-        List<Long> nbrOfAgesPerCategoryFemale = getNbrPerAgeCategory(female);
-
-        return new PatientAdmissionCorrelation(categories, nbrOfAgesPerCategoryMale, nbrOfAgesPerCategoryFemale);
+        return new PatientAdmissionCorrelation(categories, calculateAgesAndGroup(male), calculateAgesAndGroup(female));
     }
 
-    private List<Long> getNbrPerAgeCategory(List<Patient> patients) {
-        List<Integer> ages = new ArrayList<>();
-        patients.forEach(patient -> {
-            int admitYear = admissionService.findFirstByPatient(patient.getId()).getAdmitTime().getYear();
-            ages.add(admitYear - patient.getDateOfBirth().getYear());
-        });
+    private List<Integer> calculateAgesAndGroup(List<Patient> patients) {
+        List<Integer> ages = calculateAgesAndAddToList(patients);
+        return groupAndOrderAges(ages);
+    }
 
-        TreeMap<String, Long> nbrOfAgesPerCategory = new TreeMap<>(ages.stream().collect(Collectors.groupingBy(this::group, Collectors.counting())));
+    private List<Integer> groupAndOrderAges(List<Integer> ages) {
+        TreeMap<String, Integer> nbrOfAgesPerCategory =
+                new TreeMap<>(ages.stream().collect(Collectors.groupingBy(this::groupAgeCategories, Collectors.summingInt(x -> 1))));
 
         Arrays.asList(categories).forEach(category -> {
             if(!nbrOfAgesPerCategory.containsKey(category)) {
-                nbrOfAgesPerCategory.put(category, 0L);
+                nbrOfAgesPerCategory.put(category, 0);
             }
         });
 
         return new ArrayList<>(nbrOfAgesPerCategory.values());
     }
 
-    private String group(int age) {
+    private TreeMap<Integer, Integer> getIndividualAgeOccurrences(List<Integer> ages) {
+        return new TreeMap<>(ages.stream().collect(Collectors.groupingBy(age -> age, Collectors.summingInt(x -> 1))));
+    }
+
+    private String groupAgeCategories(int age) {
         if(age < 20)
             return AgeGroup.TEENS.toString();
         if(age < 30)
@@ -75,9 +76,53 @@ public class AnalysisService implements IAnalysisService {
             return AgeGroup.SEVENTIES.toString();
         if(age < 90)
             return AgeGroup.EIGHTIES.toString();
-        if(age > 90)
-            return AgeGroup.NINETIES.toString();
 
-        return null;
+        return AgeGroup.NINETIES.toString();
+
+    }
+
+    @Override
+    public IndividualPatientAdmissionCorrelationDto findCorrelationBetweenPatientAgeGenderAndAdmissionRateIndividual() {
+        List<Patient> male = patientService.findByGender("M");
+        List<Patient> female = patientService.findByGender("F");
+
+        return new IndividualPatientAdmissionCorrelationDto(getAgeOccurrenceWrapper(male), getAgeOccurrenceWrapper(female));
+    }
+
+    private List<AgeOccurrence> getAgeOccurrenceWrapper(List<Patient> patients) {
+        List<Integer> ages = calculateAgesAndAddToList(patients);
+        return transformAgeOccurrencesToList(getIndividualAgeOccurrences(ages));
+    }
+
+    private List<AgeOccurrence> transformAgeOccurrencesToList(TreeMap<Integer, Integer> ageOccurrencesMap) {
+        List<AgeOccurrence> ageOccurrences = new ArrayList<>();
+        ageOccurrencesMap.forEach((k, v) -> {
+            ageOccurrences.add(new AgeOccurrence(k, v));
+        });
+
+        return ageOccurrences;
+    }
+
+    private List<Integer> calculateAgesAndAddToList(List<Patient> patients) {
+        List<Integer> ages = new ArrayList<>();
+        patients.forEach(patient -> {
+            Admission firstAdmission = admissionService.findFirstByPatient(patient.getId());
+            int age = calculateAge(firstAdmission, patient);
+            if(age == 300) {
+                ages.add(generateRandomAge());
+            } else {
+                ages.add(age);
+            }
+        });
+        return ages;
+    }
+
+    private int generateRandomAge() {
+        Random random = new Random();
+        return random.nextInt(100-90) + 90;
+    }
+
+    private int calculateAge(Admission admission, Patient patient) {
+        return admission.getAdmitTime().getYear() - patient.getDateOfBirth().getYear();
     }
 }

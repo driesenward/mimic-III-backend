@@ -5,14 +5,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PatientAdmissionCorrelationDto {
-    private String[] categories;
-    private List<Integer> male;
-    private List<Integer> female;
+public class AgeOccurrence {
+    private int age;
+    private int occurrences;
 }
