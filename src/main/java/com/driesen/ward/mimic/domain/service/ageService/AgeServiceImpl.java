@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/***
+ * AgeServiceImpl implemented with the {@link AgeService} interface.
+ */
 @Service
 @RequiredArgsConstructor
 public class AgeServiceImpl implements AgeService {
