@@ -1,4 +1,4 @@
-package com.driesen.ward.mimic.domain.model;
+package com.driesen.ward.mimic.domain.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,8 +11,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PatientAdmissionCorrelation {
-    private String[] categories;
-    private List<Long> male;
-    private List<Long> female;
+public class IndividualPatientAdmissionCorrelationDto {
+    private List<AgeOccurrenceDto> male;
+    private List<AgeOccurrenceDto> female;
 }

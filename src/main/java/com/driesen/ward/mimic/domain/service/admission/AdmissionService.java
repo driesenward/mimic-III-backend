@@ -1,17 +1,18 @@
 package com.driesen.ward.mimic.domain.service.admission;
 
-import com.driesen.ward.mimic.domain.model.Admission;
-import com.driesen.ward.mimic.persistence.AdmissionRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
+import com.driesen.ward.mimic.domain.model.entities.Admission;
 
-@Service
-@RequiredArgsConstructor
-public class AdmissionService implements IAdmissionService {
-    private final AdmissionRepository admissionRepository;
-
-    @Override
-    public Admission findFirstByPatient(int patientId) {
-        return admissionRepository.findFirstByPatientIdOrderByAdmitTime(patientId);
-    }
+/***
+ * AdmissionService interface.
+ *
+ * Contains methods to handle operations regarding admissions.
+ */
+public interface AdmissionService {
+    /***
+     * Retrieves the first admission from a certain patient.
+     *
+     * @param patientId ID of the patient.
+     * @return Admission object if there is an admission for that patient.
+     */
+    Admission findFirstByPatient(int patientId);
 }

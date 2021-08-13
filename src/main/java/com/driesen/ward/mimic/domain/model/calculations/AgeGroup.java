@@ -1,4 +1,4 @@
-package com.driesen.ward.mimic.domain.model;
+package com.driesen.ward.mimic.domain.model.calculations;
 
 public enum AgeGroup {
     TEENS ("16 - 20"),
@@ -13,7 +13,7 @@ public enum AgeGroup {
 
     private final String name;
 
-    private AgeGroup(String name) {
+    AgeGroup(String name) {
         this.name = name;
     }
 
