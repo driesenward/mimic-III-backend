@@ -7,6 +7,11 @@ import lombok.Setter;
 
 import java.util.List;
 
+/***
+ * PatientAdmissionCorrelation Model Object.
+ *
+ * Contains all the age categories and corresponding occurrences for those categories for male and female.
+ */
 @Getter
 @Setter
 @NoArgsConstructor

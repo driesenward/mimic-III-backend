@@ -5,6 +5,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/***
+ * AgeOccurrence Model Object.
+ *
+ * Attributes to represent the amount of occurrences per age.
+ */
 @Getter
 @Setter
 @NoArgsConstructor

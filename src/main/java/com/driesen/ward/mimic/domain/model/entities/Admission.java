@@ -8,6 +8,11 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+/***
+ * Admission Model Object.
+ *
+ * Attributes to represent an admission.
+ */
 @Entity(name = "admissions")
 @Getter
 @Setter

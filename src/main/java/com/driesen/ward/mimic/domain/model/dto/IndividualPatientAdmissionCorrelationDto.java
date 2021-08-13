@@ -7,6 +7,11 @@ import lombok.Setter;
 
 import java.util.List;
 
+/***
+ * IndividualPatientAdmissionCorrelationDto Dto Object.
+ *
+ * Used for REST response.
+ */
 @Getter
 @Setter
 @NoArgsConstructor

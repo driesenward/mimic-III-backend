@@ -5,6 +5,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/***
+ * AgeOccurrenceDto Dto Object.
+ *
+ * Used for REST response.
+ */
 @Getter
 @Setter
 @NoArgsConstructor

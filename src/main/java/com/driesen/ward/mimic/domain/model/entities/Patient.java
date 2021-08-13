@@ -8,6 +8,11 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+/***
+ * Patient Model Object.
+ *
+ * Attributes to represent a patient.
+ */
 @Entity(name = "patients")
 @Getter
 @Setter
